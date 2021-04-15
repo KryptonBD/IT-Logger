@@ -30,6 +30,7 @@ export const getLogs = () => async dispatch => {
     }
 
 }
+
 // Add New Logs
 export const addLog = (log) => async dispatch => {
     try {
@@ -42,7 +43,7 @@ export const addLog = (log) => async dispatch => {
             }
         });
         const data = await res.json();
-        
+
         dispatch({
             type: ADD_LOG,
             payload: data
@@ -53,8 +54,9 @@ export const addLog = (log) => async dispatch => {
             payload: err.response.data
         })
     }
-    
+
 }
+
 
 // Delete log
 export const deleteLog = (id) => async dispatch => {
@@ -76,6 +78,48 @@ export const deleteLog = (id) => async dispatch => {
 
     }
 
+}
+
+// Update Log on Serve
+export const updateLog = (log) => async dispatch => {
+    try {
+        setLoading();
+        const res = await fetch(`/logs/${log.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(log),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await res.json();
+
+        dispatch({
+            type: UPDATE_LOG,
+            payload: data
+        });
+    } catch (error) {
+        dispatch({
+            type: LOGS_ERROR,
+            payload: error.response.data
+        })
+
+    }
+
+}
+
+
+//set current
+export const setCurrent = log => {
+    return {
+        type: SET_CURRENT,
+        payload: log
+    }
+}
+//clear current
+export const clearCurrent = () => {
+    return {
+        type: CLEAR_CURRENT
+    }
 }
 //set loading true
 export const setLoading = () => {
